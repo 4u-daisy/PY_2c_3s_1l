@@ -19,7 +19,6 @@ for r, d, f in os.walk(directory_to_extract_to):
         if file.endswith(".txt"):
             txt_files.append(r + '\\' + file)
 
-
 # task 2.2
 for file in txt_files:
     target_file_data = open(file, 'rb').read()
@@ -57,30 +56,30 @@ headers = []
 for line in lines:
     if counter == 0:
         headers = re.sub(r'<.*?>', ';', line)
-        headers = re.findall("[А-Яа-я-ё]+\s?", headers)
+        headers = re.findall('[А-Яа-я-ё]+\s?', headers)
         counter += 1
         headers[3] = headers[3] + headers[4]
         del headers[4]
         continue
-    temp = re.sub("<.*?>", ';', line)
-    temp = re.sub("\(.*?\)", "", temp)
-    temp = re.sub(";+", ';', temp)
-    temp = re.sub("^;", "", temp)
-    temp = re.sub(";$", "", temp)
-    temp = re.sub("\*", ' ', temp)
+    temp = re.sub('<.*?>', ';', line)
+    temp = re.sub('\(.*?\)', '', temp)
+    temp = re.sub(';+', ';', temp)
+    temp = re.sub('^;', '', temp)
+    temp = re.sub(';$', '', temp)
+    temp = re.sub('\*', ' ', temp)
 
     tmp_split = re.split(';', temp)
     if (len(tmp_split) == 6):
-        tmp_split.remove("📝  ")
+        tmp_split.remove('📝  ')
     country_name = tmp_split[0]
-    country_name = re.sub("[🇦-🇿]", '', country_name)
-    country_name = re.sub("🛳", '', country_name)
-    country_name = re.sub(r"^\s+", "", country_name)
+    country_name = re.sub('[🇦-🇿]', '', country_name)
+    country_name = re.sub('🛳', '', country_name)
+    country_name = re.sub(r'^\s+', '', country_name)
 
-    col1_val = re.sub(u"\xa0", "", tmp_split[1])
-    col2_val = re.sub(u"\xa0", "", tmp_split[2])
-    col3_val = re.sub(u"\xa0", "", tmp_split[3])
-    col4_val = re.sub(u"\xa0", "", tmp_split[4])
+    col1_val = re.sub(u'\xa0', '', tmp_split[1])
+    col2_val = re.sub(u'\xa0', '', tmp_split[2])
+    col3_val = re.sub(u'\xa0', '', tmp_split[3])
+    col4_val = re.sub(u'\xa0', '', tmp_split[4])
     if (col4_val == '_'):
         col4_val = -1
 
@@ -91,16 +90,16 @@ for line in lines:
     result_dct[country_name][headers[3]] = int(col4_val)
 
 # task 5
-output = open(directory_to_extract_to + '\\data.csv', 'w')
-string_headers = "Страна;" + ";".join(headers)
-output.write(string_headers + "\n")
+output = open(directory_to_extract_to + "\\data.csv", 'w')
+string_headers = "Страна;" + ';'.join(headers)
+output.write(string_headers + '\n')
 
 for key in result_dct.keys():
-    output.write(str(key) + ";")
+    output.write(str(key) + ';')
     for i in range(0, 4):
-        string_to_write = str(result_dct[key][headers[i]]) + ";"
+        string_to_write = str(result_dct[key][headers[i]]) + ';'
         output.write(string_to_write)
-    output.write("\n")
+    output.write('\n')
 
 output.close()
 
